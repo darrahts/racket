@@ -1,0 +1,1 @@
+("6.3" ("012787390561054338a3542f73014f2d23da7e3d" . "7206801961fc3a76263ae43671d9403873265348") (collects #"data" #"heap.rkt") (collects #"data" #"queue.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt") (collects #"srfi" #"13.rkt"))

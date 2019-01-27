@@ -1,0 +1,16 @@
+racket racket-solver/main.rkt -l layouts/tinyMaze.lay -s tinyMazeSearch
+racket racket-solver/main.rkt -l layouts/tinyMaze.lay -s dfs
+racket racket-solver/main.rkt -l layouts/tinySearch.lay -s dfs
+racket racket-solver/main.rkt -l layouts/smallMaze.lay -s dfs
+racket racket-solver/main.rkt -l layouts/greedySearch.lay -s dfs
+racket racket-solver/main.rkt -l layouts/mediumMaze.lay -s dfs
+racket racket-solver/main.rkt -l layouts/bigMaze.lay -s dfs
+racket racket-solver/main.rkt -l layouts/smallMaze.lay -s bfs
+racket racket-solver/main.rkt -l layouts/tinySearch.lay -s bfs
+racket racket-solver/main.rkt -l layouts/mediumMaze.lay -s bfs
+racket racket-solver/main.rkt -l layouts/greedySearch.lay -s bfs
+racket racket-solver/main.rkt -l layouts/bigMaze.lay -s bfs
+racket racket-solver/main.rkt -l layouts/bigMaze.lay -s astar -r distance-to-food
+racket racket-solver/main.rkt -l layouts/openMaze.lay -s astar -r distance-to-food
+racket racket-solver/main.rkt -l layouts/greedySearch.lay -s astar -r count-food
+racket racket-solver/main.rkt -l layouts/tinySearch.lay -s astar -r count-food

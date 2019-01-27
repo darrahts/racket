@@ -1,0 +1,209 @@
+#lang racket
+
+(require "utils.rkt")
+
+
+;(define maze (layout parser "file")) see doc 
+
+;; A set solution for the tiny maze
+(provide tinyMazeSearch)
+(define (tinyMazeSearch maze)
+  ;; a solution for the tiny maze layout
+  '(#\S #\S #\W #\S #\W #\W #\S #\W))
+
+;; solve using BFS
+(provide BFS)
+
+(define (BFS maze)
+  ; make the fronteir
+  (define fronteir (make-queue))
+  ; each node is a list of lists (the path to it and itself)
+  (define node (list (list) null))
+  ; the start node has no path to it and itself is the maze
+  (define start (list (list) maze))
+  ; add the start node to the fronteir
+  (set! fronteir (push-queue start fronteir))
+  ; list for visited nodes
+  (define visited (make-set))
+
+  ; separate the node into the maze portion (self)
+  ; and the path portion (dir)
+  (define node-self (list-ref start 1))
+  (define node-dir (list-ref start 0))
+
+  ;(println node-self)
+  ;(println node-dir)
+  (for ([i (in-naturals 0)]
+        ;break if the goal is found or the queue is empty
+        #:break (or (is-goal node-self) (queue-empty? fronteir)))
+    ;(set! node (pop-queue fronteir))
+    (set!-values (node fronteir) (pop-queue fronteir))
+    
+    ;(println node)
+    ; get the maze part of the node (the node itself)
+    (set! node-self (list-ref node 1))
+    ;(println node-self)
+    ; get the path part of the node
+    (set! node-dir (list-ref node 0))
+    ;(println node-dir)
+
+    (cond
+      [(is-goal node-self)
+      ; (println "found goal!")
+      ; (println node-dir)
+       ]
+      [else
+       ;(println "not goal")
+       (map
+        (lambda (i) 
+          (cond
+            ; check if the node is on the visited list
+             [(not (ismember? (list-ref i 1) visited))
+              ; if its not, get its successors and add them to the queue
+              (set! fronteir (push-queue (list (cons (list-ref i 0) node-dir) (list-ref i 1)) fronteir))
+              ; add the node to the set of visited nodes
+              (set! visited (push-set node-self visited))]
+             ; otherwise do nothing essentially
+             [else (set! fronteir fronteir) ])
+          ) (get-succ node-self)
+        )
+      ]))
+  (reverse node-dir)
+  ) 
+    
+
+
+
+
+;; solve using DFS
+(provide DFS)
+
+(define (DFS maze)
+  ; make the fronteir
+  (define fronteir (make-stack))
+  ; each node is a list of lists (the path to it and itself)
+  (define node (list (list) null))
+  ; the start node has no path to it and itself is the maze
+  (define start (list (list) maze))
+  ; add the start node to the fronteir
+  (set! fronteir (push-stack start fronteir))
+  ; list for visited nodes
+  (define visited (make-set))
+
+  ; separate the node into the maze portion (self)
+  ; and the path portion (dir)
+  (define node-self (list-ref start 1))
+  (define node-dir (list-ref start 0))
+
+  ;(println node-self)
+  ;(println node-dir)
+  (for ([i (in-naturals 0)]
+        ;break if the goal is found or the queue is empty
+        #:break (or (is-goal node-self) (stack-empty? fronteir)))
+    ;(set! node (pop-queue fronteir))
+    (set!-values (node fronteir) (pop-stack fronteir))
+    ;(println node)
+    ; get the maze part of the node (the node itself)
+    (set! node-self (list-ref node 1))
+    ;(println node-self)
+    ; get the path part of the node
+    (set! node-dir (list-ref node 0))
+    ;(println node-dir)
+
+    (cond
+      [(is-goal node-self)
+      ; (println "found goal!")
+      ; (println node-dir)
+       ]
+      [else
+       ;(println "not goal")
+       (map
+        (lambda (i) 
+          (cond
+            ; check if the node is on the visited list
+             [(not (ismember? (list-ref i 1) visited))
+              ; if its not, get its successors and add them to the queue
+              (set! fronteir (push-stack (list (cons (list-ref i 0) node-dir) (list-ref i 1)) fronteir))
+              ; add the node to the set of visited nodes
+              (set! visited (push-set node-self visited))]
+             ; otherwise do nothing essentially
+             [else (set! fronteir fronteir) ])
+          ) (get-succ node-self)
+        )
+      ]))
+  (reverse node-dir)
+  ) 
+
+
+
+  
+
+;; solve using A*
+(provide A-star)
+
+(define (A-star maze heuristic-fun)
+  ; make the fronteir
+  (define pq (make-priority-queue (g-func heuristic-fun)))
+  ; each node is a list of lists (the path to it and itself)
+  (define node (list (list) null))
+  ; the start node has no path to it and itself is the maze
+  (define start (list (list) maze))
+  ; add the start node to the fronteir
+  (set! pq (push-priority-queue start pq))
+  ; list for visited nodes
+  (define visited (make-set))
+
+  ; separate the node into the maze portion (self)
+  ; and the path portion (dir)
+  (define node-self (list-ref start 1))
+  (define node-dir (list-ref start 0))
+
+  ;(println node-self)
+  ;(println node-dir)
+  (for ([i (in-naturals 0)]
+        ;break if the goal is found or the queue is empty
+        #:break (or (is-goal node-self) (priority-queue-empty? pq)))
+    ;(set! node (pop-queue fronteir))
+    (set!-values (node pq) (pop-priority-queue pq))
+    ;(println node)
+    ; get the maze part of the node (the node itself)
+    (set! node-self (list-ref node 1))
+    ;(println node-self)
+    ; get the path part of the node
+    (set! node-dir (list-ref node 0))
+    ;(println node-dir)
+
+    (cond
+      [(is-goal node-self)
+      ; (println "found goal!")
+      ; (println node-dir)
+       ]
+      [else
+       ;(println "not goal")
+       (map
+        (lambda (i) 
+          (cond
+            ; check if the node is on the visited list
+             [(not (ismember? (list-ref i 1) visited))
+              ; if its not, get its successors and add them to the queue
+              (set! pq (push-priority-queue (list (cons (list-ref i 0) node-dir) (list-ref i 1)) pq))
+              ; add the node to the set of visited nodes
+              (set! visited (push-set node-self visited))]
+             ; otherwise do nothing essentially
+             [else (set! pq pq) ])
+          ) (get-succ node-self)
+        )
+      ]))
+  (reverse node-dir)
+  ) 
+
+
+
+;(define maze (layout-path-parser "../layouts/tinyMaze.lay"))
+
+;(BFS maze)
+
+;(DFS maze)
+
+
+
