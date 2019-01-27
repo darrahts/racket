@@ -1,0 +1,1 @@
+("6.3" ("e9b6c10c6318c7ac374bd351cfe144017c7d426f" . "6424529fccd4d8c7fd95023f19aea86e3aedb45c") #"/home/tdarrah/Desktop/desktop/cs5260/min-max-othello/typed-othello-game-logic.rkt" (collects #"2htdp" #"image.rkt") (collects #"2htdp" #"universe.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
