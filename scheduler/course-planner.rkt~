@@ -1,0 +1,17 @@
+#lang racket
+
+(require "read-in.rkt")
+(require "schedule-tester.rkt")
+
+(define (schedule-advisor catalog goal-conditions network interactive)
+  ;; Your code here
+  (values '() 0))
+
+(define (get-expected-values schedule network grades-for-taken-classes)
+  ;; Your code here
+  '())
+
+;;
+(define (get-expected-gpa schedule network grades-for-taken-classes)
+  ;; Your code here
+  0)
